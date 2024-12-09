@@ -15,7 +15,7 @@ book:
     background: "#F6F6F6"
     logo: "https://datatopics.worldbank.org/world-development-indicators/img/logo-wb-header-en.svg"
     search: true
-  # site-url: "https://yourwebsite.com/your-book-directory/"
+  site-url: "https://wb-decis.github.io/wdi-indicator-selection/"
   chapters:
     - index.qmd
     - ch1_intro.qmd
