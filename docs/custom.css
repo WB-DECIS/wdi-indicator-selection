@@ -1,0 +1,10 @@
+/* Style the logo container in the sidebar */
+.sidebar-logo {
+    text-align: center; /* Center-align the logo */
+    margin-top: 10px; /* Add space above the logo */
+  }
+  
+  .quarto-sidebar {
+    padding-top: 20px; /* Ensure enough padding for the logo */
+  }
+  

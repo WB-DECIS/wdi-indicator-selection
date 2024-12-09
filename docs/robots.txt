@@ -1,0 +1,1 @@
+Sitemap: https://wb-decis.github.io/wdi-indicator-selection/sitemap.xml
