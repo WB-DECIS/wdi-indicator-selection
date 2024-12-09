@@ -1,0 +1,15 @@
+# Applications of the WDI Criteria
+
+We provide a few examples to show how the criteria have been applied to some recent additions to the WDI indicators. We also provide the example of a decision to remove an indicator. 
+
+The first is the Learning Poverty indicator jointly produced by the World Bank and UNESCO UIS. Learning Poverty measures the share of 10-year-olds who are below the minimum proficiency level (MPL) for reading (cannot read and understand a short passage of age-appropriate material). <span style="color: #0275d8;">This indicator</span> is updated regularly, but <span style="color: #0275d8;">covers 123 economies</span>, placing it below the median for country coverage in the WDI (see Table 3). While it is not a top performer on the country coverage metric, its inclusion <span style="color: #0275d8;">in the World Bank Corporate Scorecard</span> and relevance to the Sustainable Development Goals makes it a critical indicator with substantial user benefit. The data is available with an open license, is well documented, and follows a sound methodology. Moreover, it is a newly created indicator. Given these considerations, the WDI team made the decision to include it in the WDI.
+
+Two indicators that were recently retired from the WDI are the Doing Business indicators and the Statistical Capacity Indicators (SCI). In the case of the Doing Business indicators, the project to collect the indicators was stopped in 2021 and replaced by the <a href="https://www.worldbank.org/en/businessready" target="_blank">Business Ready</a> indicators. The old Doing Business indicators will be available as part of the <a href="https://datatopics.worldbank.org/world-development-indicators/wdi-archives.html" target="_blank">WDI archives</a>. The Statistical Capacity Indicator (SCI) has been replaced by the Statistical Performance Indicators (SPI), which provide an updated framework for measuring statistical performance. Data will no longer be collected for the SCI and has therefore been retired and archived.
+
+| **Indicator**                                 | **Economies Covered** | **Time Span**   | **Open License** | **Trusted Methodology**          | **Regular Updates** |
+|:---------------------------------------------|:----------------------|:----------------|:-----------------|:---------------------------------|:--------------------|
+| **Learning Poverty**                         | 123                  | 2000-2019       | Yes              | Yes                              | Yes                |
+| **Doing Business (Ease of Doing Business Index)** | 189                  | 2004-2020       | Yes              | Data irregularities reported     | Discontinued       |
+| **Statistical Capacity Indicator (SCI)**     | 150                  | 2004-2020       | Yes              | Replaced by SPI                  | Discontinued       |
+
+: Indicator Metrics for Case Studies as of April 2024 {#tbl-5_1}

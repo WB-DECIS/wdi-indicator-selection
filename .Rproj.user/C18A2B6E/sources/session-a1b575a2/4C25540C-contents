@@ -1,0 +1,61 @@
+# Annex {.unnumbered}
+
+
+| **Area**              | WDI Framework (2024) | Fantom & Khokhar (2014) | Joliffe et al. (2021) | Statistics Canada (2017) | OECD (2011) | UN (2019) | Biemer (2010) |
+|:----------------------|:---------------------|:------------------------|:----------------------|:--------------------------|:------------|:----------|:--------------|
+| **Adequate Coverage**  | Complete             | Completeness            | Complete              | Coverage                 |             |           | Completeness   |
+|                       | Frequent             |                        | Frequent              | Viability                |             |           |               |
+|                       | Timely               | Timeliness             | Timely                | Timeliness & punctuality | Timeliness& punctuality | Timeliness & punctuality | Timeliness/ punctuality |
+| **High Quality**       | Granular             | Extent of detail       | Granular             | Granularity              |             |           |               |
+|                       | Accurate             | Accuracy               | Accurate             | Accuracy & reliability   | Accuracy, reliability    | Accuracy & reliability; Methodological soundness | Accuracy       |
+|                       | Comparable           | Comparability          | Comparable           | Standardization or conformance |  | Comparability | Comparability  |
+|                       |  Not Redundant       |                       |                      |                        |            |      |   |
+| **Easy to Use**        | Accessible           | Accessibility          | Accessible           | Accessibility           | Openness/ transparency | Accessibility | Accessibility |
+|                       | Understandable       | Clarity                | Understandable       | Processability and understandability |        | Clarity; Transparency |   Usability/ interpretability               |
+|                       | Interoperable        | Coherence              | Interoperable        | Combinability or likability | Coherence   | Coherence | Coherence      |
+|  **Trusted & Relevant** | Impartial            | Plausibility           | Impartial            | Perception of authority, impartiality & trustworthiness | Credibility; objectivity; integrity; impartiality | Impartiality & objectivity | Credibility    |
+|                       | Confidentiality protected | Confidentiality      | Confidential         | Security. Protection of sensitive information | Confidentiality protected | Statistical confidentiality & data security |                             |
+|                       | Development Relevance | Relevance              | Appropriate          | Relevance & usefulness  | Relevance & usefulness    |  Relevance      | Relevance |    
+|                       |                       |                        | Other                | Quality assurance; reproducibility; contact ability | Effective stakeholder engagement | Many, see table note |            |
+: Comparison of other theoretical frameworks. Modified from Jolliffe et al. (2023) {#tbl-a_1}
+
+<div style="font-size: 0.85em">
+Note: This figure is inspired by, and takes some information from, Jolliffe et al. (2023) & Marker (2017). The UN framework has many other attributes most of which are related to managing the statistical system and hence do not relate to the framework of this paper: Coordinating the national statistical system, managing relationships, managing statistical standards, professional independence, adequacy of resources, commitment to quality, appropriate statistical procedures, managing the respondent burden, and cost-effectiveness.
+</div>
+
+<br>
+
+| **Field**                  | **Definition**                                                                                          |
+|:---------------------------|:--------------------------------------------------------------------------------------------------------|
+| **Definition**              | Detailed definition of the indicator.                                                                    |
+| **Definition references**  | Links/sources for the definition.                                                                        |
+| **Development Relevance**  | Development relevance and importance of the indicator.                                                    |
+| **Methodology**             | Methodology used to calculate/derive the indicator.                                                      |
+| **Statistical concept**    | Statistical concepts and standards applied.                                                              |
+| **Measurement unit**       | Unit of measurement for the indicator.                                                                   |
+| **Aggregation method**     | Method for aggregating the indicator across geographic levels.                                           |
+| **Sources**                 | Data sources used to compile the indicator.                                                              |
+| **Aliases**                 | Different names/aliases for the indicator separated by semicolons.                                        |
+| **Alternate Identifiers**  | Any other identifiers used for the indicator in source databases.                                        |
+
+: WDI Metadata Required Fields {#tbl-a_2}
+
+<br>
+
+| **Area**           | **Dimension**         | **Data Quality Policy Principle**                  |
+|:-------------------|:----------------------|:--------------------------------------------------|
+| **Easy to Use**    | Accessible            | Access, Dissemination, and Storage (h)            |
+|                    | Understandable        | Transparency (d)                                  |
+|                    | Interoperable         | Inter-operability (l)                             |
+| **Trusted & Relevant** | Impartial          | Impartiality and Independence (a)                 |
+|                    | Confidentiality Protected | Responsible Data Management (b)                |
+|                    | Development Relevance | Relevance (e)                                     |
+| **Adequate Coverage** | Complete            | Efficient Data Collection (i)                     |
+|                    | Frequent              | Efficient Data Collection (i)                     |
+|                    | Timely                | Access, Dissemination, and Storage (h)            |
+| **High Quality**   | Accurate              | Verifiability (c)                                 |
+|                    | Comparable            | Coherence and Comparability (f)                   |
+|                    | Granular              | Coherence and Comparability (f)                   |
+|                    | Not Redundant         | Coherence and Comparability (f)                   |
+
+: Mapping Between WDI Criteria Dimensions and World Bank Data Quality Policy Principles {#tbl-a_3}

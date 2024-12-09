@@ -1,0 +1,15 @@
+# References {.unnumbered}
+
+- Biemer, Paul P. 2010. “Total Survey Error: Design, Implementation, and Evaluation.” *Public Opinion* Quarterly 74 (5): 817—848.
+- European Statistics Code of Practice. 2017. *European Statistics Code of Practice for the National Statistical Authorities and Eurostat (EU statistical authority)*. European Union. Available at: <a href="https://ec.europa.eu/eurostat/web/quality/european-quality-standards/european-statistics-code-of-practice" target="_blank">https://ec.europa.eu/eurostat/web/quality/european-quality-standards/european-statistics-code-of-practice</a>
+- Fantom, Neil and Khokhar, Tariq. "How we do Open Data: #1 - choosing development indicators” (2014). World Bank Data Blog. Available at: <a href="https://blogs.worldbank.org/opendata/how-we-do-open-data-choosing-development-indicators" target="_blank">https://blogs.worldbank.org/opendata/how-we-do-open-data-choosing-development-indicators</a>
+- Jolliffe, Dean, Daniel Gerszon Mahler, Malarvizhi Veerappan, Talip Kilic, and Philip Wollburg. "What Makes Public Sector Data Valuable for Development?." *The World Bank Research Observer* 38, no. 2 (2023): 325-346.
+- Mahler, Daniel Gerszon, Umar Serajuddin, and Hiroko Maeda. "When is there enough data to create a global statistic?." *Statistical Journal of the IAOS* 39, no. 2 (2023): 447-457.
+- Office of National Statistics (ONS). The Government Data Quality Framework. UK government publications, December 3, 2020. Available at: <a href="https://www.gov.uk/government/publications/the-government-data-quality-framework" target="_blank">https://www.gov.uk/government/publications/the-government-data-quality-framework</a>
+- OECD. 2011. “Measuring Trust in Official Statistics.” Available at: <a href="https://www.oecd.org/sdd/50027008.pdf" target="_blank">https://www.oecd.org/sdd/50027008.pdf</a>
+- Open Knowledge Foundation. "The Open Definition." Open Definition. Last modified April 2, 2015. Available at: <a href="https://opendefinition.org/" target="_blank">https://opendefinition.org/</a>
+- Statistics Canada. 2017. Data quality toolkit, release data September 27. Available at: <a href="https://www.statcan.gc.ca/eng/data-quality-toolkit" target="_blank">https://www.statcan.gc.ca/eng/data-quality-toolkit</a>
+- World Bank. 2021. *World Development Report 2021: Data for Better Lives*. Washington DC: World Bank. Available at: <a href="https://doi.org/10.1596/978-1-4648-1600-0" target="_blank">https://doi.org/10.1596/978-1-4648-1600-0</a>
+- World Bank. *World development indicators 2023*. The World Bank, April 2023.
+- World Bank. (forthcoming). *Data Quality Policy*. The World Bank.
+- UN. 2019. “United Nations National Quality Assurance Frameworks Manual for Official Statistics.” Available at: <a href="https://unstats.un.org/unsd/methodology/dataquality/un-nqaf-manual/#UN-NQAF-Manual" target="_blank">https://unstats.un.org/unsd/methodology/dataquality/un-nqaf-manual/#UN-NQAF-Manual</a>

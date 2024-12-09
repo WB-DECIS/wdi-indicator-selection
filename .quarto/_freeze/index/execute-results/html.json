@@ -1,0 +1,15 @@
+{
+  "hash": "47d48dd6f083741fe226584596afadb7",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Abstract {.unnumbered}\n\nThe World Development Indicators (WDI) serve as a valuable resource for researchers, policymakers, and development professionals worldwide. To ensure the WDI's indicators remain relevant and accessible, they are selected based on four fundamental criteria: ease of use, trustworthiness, coverage, and quality. This paper delineates the framework for evaluating the suitability of indicators for inclusion in the WDI, incorporating both quantitative and qualitative criteria. It also highlights specific examples of indicators under consideration for addition or retirement. The selection process is designed to ensure that the WDI continues to offer pertinent and reliable data to inform the global development discourse.\n\n\n\n\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] 2\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

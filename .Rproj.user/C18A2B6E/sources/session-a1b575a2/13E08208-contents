@@ -1,0 +1,36 @@
+# Monitoring Existing WDI Indicatorors
+
+The World Development Indicators (WDI) undergo a systematic review process to maintain their relevance and appropriateness. This section details the quantitative benchmarks that form the cornerstone of this evaluation and describes their application in the assessment process.
+
+As a benchmark, @tbl-3_1 provides an overview of the quantitative metrics for the April 2024 vintage of the WDI. The selected groups correspond to the 1st, 2nd, 5th, 10th, and 50th percentiles among existing WDI indicators. 
+
+
+| **Metric**                          | **Bottom (1st) Percentile** | **2nd Percentile** | **5th Percentile** | **10th Percentile** | **50th Percentile** |
+|:------------------------------------|:----------------------------|:--------------------|:--------------------|:---------------------|:---------------------|
+| **Number of economies**             | 30                         | 50                 | 80                 | 100                 | 180                 |
+| **Percent of low- and middle-income economies** | 10                         | 30                 | 40                 | 65                  | 90                  |
+| **Span of years**                   | 3                          | 6                  | 10                 | 15                  | 50                  |
+| **Absolute latest year**            | 2012                       | 2013               | 2015               | 2018                | 2021
+
+
+: Distribution of Quantitative Metrics in the WDI as of April 2024. {#tbl-3_1}
+
+The World Development Indicators (WDI) team flags indicators that rank in the lower percentiles across various metrics for an in-depth review and consultation among experts in the World Bank. This step is crucial as it triggers a rigorous qualitative evaluation to decide whether an indicator should be retained. During this evaluation, the team carefully analyzes the indicator's methodology, data sources, and its congruence with essential development objectives. An indicator's failure to meet one or more quantitative benchmarks does not lead to its automatic exclusion. Instead, the WDI team considers the unique contributions and insights an indicator may provide, balancing its quantitative scores against its potential qualitative value. To justify keeping an indicator, a compelling argument must be presented, either by underscoring its outstanding relevance to key issues or by proposing a practical strategy for enhancing its quality, such as through better data collection practices, methodological refinements, or partnerships with data providers.
+
+The World Development Indicators (WDI) team applies a more streamlined review process for indicators that perform above the median in all categories, particularly when they exhibit outstanding performance across multiple metrics. Nonetheless, the team maintains a proactive stance in overseeing these indicators, staying alert to any potential qualitative issues that may arise. This includes being attentive to changes in data collection methods, updates in methodological approaches, or shifts in development priorities that could affect the indicator's pertinence. To guarantee that the qualitative standards for these indicators are maintained at the highest level, the WDI team regularly engages with domain experts and key stakeholders for their insights and updates.
+
+| **Indicator**                           | **Number of Economies** | **Percent of Low- and Middle-Income Economies** | **Span of Years** | **Absolute Latest Year** | **Median Latest Year** | **Non-Missing Data, Share** | **Unique Visitors (Last 12 Months)** |
+|:---------------------------------------|:------------------------|:-----------------------------------------------|:------------------|:--------------------------|:-------------------------|:----------------------------|:-------------------------------------|
+| **Mortality rate, infant (per 1,000 live births)** | 196<sup>1</sup>          | 100<sup>5</sup>                                 | 62<sup>5</sup>     | 2021<sup>5</sup>          | 2021<sup>5</sup>         | 91<sup>5</sup>              | 80,591<sup>5</sup>                   |
+| **Female genital mutilation prevalence (%)**      | 30<sup>1</sup>           | 22.4<sup>2</sup>                               | 33<sup>4</sup>     | 2022<sup>5</sup>          | 2018<sup>4</sup>         | 9.2<sup>1</sup>             | 8,591<sup>5</sup>                    |
+
+: Quantitative Scoring Metrics for Infant Mortality and Female Genital Mutilation Indicators as of April 2024 {#tbl-3_2}
+
+<div style="font-size: 0.85em">
+1. Bottom percentile. 2. Above 2nd Percentile. 3. Above 5th Percentile. 4. Above 10th Percentile. 5. Above 50th Percentile.
+</div>
+
+The World Development Indicators (WDI) feature a diverse range of indicators, such as infant mortality rates (mortality rate for children under age 5) and Female Genital Mutilation (FGM). Infant mortality rate data covers 196 economies over 62 years, while FGM data is scarcer, reported for only thirty economies across 33 years. The limited availability of FGM data is due to the infrequent nature of household surveys collecting such information leading to a substantial amount of missing data. Nevertheless, the severity of FGM as a human rights issue calls for its inclusion in the WDI. The dissemination of reliable data is vital for supporting the eradication of violence against women and girls, and therefore, despite the gaps, the FGM indicator is included in the WDI to aid in these critical efforts.
+
+A <a href="https://wb-decis.github.io/wdi_indicator_monitor/wdi_monitor.html" target="_blank">WDI monitoring dashboard</a> is regularly updated to track the performance of existing indicators against the quantitative criteria outlined in Table 2. This dashboard offers an at-a-glance view of how each indicator fares across the different metrics, allowing the WDI team to identify indicators that may be falling behind on key dimensions like data coverage, timeliness, or user engagement.
+
