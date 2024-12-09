@@ -3,7 +3,7 @@
     "path": "~/GitHub/wdi-indicator-selection/index.qmd",
     "project_path": "index.qmd",
     "type": "quarto_markdown",
-    "hash": "1322867194",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1733764624399.0,
@@ -11,7 +11,9 @@
     "relative_order": 1,
     "properties": {
         "source_window_id": "",
-        "Source": "Source"
+        "Source": "Source",
+        "cursorPosition": "2,586",
+        "scrollLine": "0"
     },
     "folds": "",
     "lastKnownWriteTime": 1733760928,

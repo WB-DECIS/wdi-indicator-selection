@@ -1,5 +1,6 @@
 project:
   type: book
+  output-dir: docs
 
 book:
   title: "Choosing World Development Indicators: A Guide to Indicator Selection"
