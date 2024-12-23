@@ -5,7 +5,7 @@ project:
 book:
   title: "Choosing World Development Indicators: A Guide to Indicator Selection"
   subtitle: "Technical note"
-  date: "12/06/2024"
+  date: "12/23/2024"
   repo-url: "https://github.com/WB-DECIS/wdi-indicator-selection"
   repo-actions: [source, issue]
   downloads: [pdf]
