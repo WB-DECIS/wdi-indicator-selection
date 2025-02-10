@@ -1,0 +1,175 @@
+# pull SDG targets
+library(dplyr)
+library(httr)
+library(jsonlite)
+library(purrr)
+library(tidyr)
+library(readxl)
+library(wbstats)
+
+# Set directory
+sdg.dir<- "C:/Users/wb599047/OneDrive - WBG/Documents/GitHub/sdg3/"
+
+# SDG API
+url <- "https://unstats.un.org/sdgs/UNSDGAPIV5/v1/sdg/Goal/8/Target/List?includechildren=true"
+t_df <- fromJSON(url) %>% pluck(5) %>% as.data.frame() 
+
+# Get ISO3 code from UNSD API 
+geo_api <- "https://unstats.un.org/sdgs/UNSDGAPIV5/v1/sdg/DataAvailability/CountriesList"
+geo_data <- content(httr::GET(geo_api)) 
+unsd_geo <- fromJSON(geo_data, flatten = TRUE)
+
+# Get WB country list and code
+rg_ctr <- wb_countries()
+wdi_ctr <- filter(rg_ctr, !is.na(region_iso3c))
+
+# Get the list of indicator code
+# For Target 3 
+ind_api <- "https://unstats.un.org/sdgs/UNSDGAPIV5/v1/sdg/Series/List"
+ind_df <- fromJSON(ind_api, flatten=TRUE) %>% as.data.frame() 
+ind_list <- ind_df %>% 
+  filter(grepl("3",goal)) %>% # Change target number here
+  filter(!grepl("13",goal)) %>%
+  unnest(c(goal,target,indicator)) %>% 
+  left_join(select(t_df,target=code, target_desc=description), by="target") %>%
+  select(target, target_desc, indicator, code, ind_desc=description) %>%
+  arrange(target,indicator)
+# write.csv(ind.list,paste0(goal.dir,"target3.all.csv"), row.names = F)
+
+
+
+# Function to pull and process data for a given series code
+pull_series_data <- function(series_code) {
+  api_request <- paste('http://unstats.un.org/SDGAPI/v1/sdg/Series/Data?seriesCode=', series_code, '&pageSize=50000', sep="")
+  data <- content(httr::GET(api_request), "text")
+  json <- fromJSON(data, flatten = TRUE)
+  df <- as_tibble(json$data) %>%
+    mutate(TimePeriod = timePeriodStart) %>%
+    left_join(unsd_geo, by = c("geoAreaCode" = "M49")) %>%
+    left_join(select(rg_ctr, country, ISO3 = iso3c, income_level_iso3c, region_iso3c, region), by = "ISO3") %>%
+    mutate(value = as.numeric(value)) %>%
+    rename(iso3c = ISO3) %>%
+    filter(iso3c%in%wdi_ctr$iso3c) # remove regional aggregates, only pull country data
+  return(df)
+}
+
+# Pull data for the specified series
+series_list <- c("SH_STA_BRTC") #, "SH_STA_MORT")
+
+series_data <- lapply(series_list, pull_series_data)
+names(series_data) <- series_list
+
+# Define the year thresholds and the latest year
+year_thresholds <- c(1990, 2000, 2010, 2015)
+
+totalspan <- max(datal$Year) - min(datal$Year) + 1
+totalcountries <- length(unique(datal$Country.Code))
+
+#wdic <- merge(wdic, countryobs, by = "Indicator.Code", all = T)
+wdic2000 <- datal %>%
+  filter(Year >= 2000) %>%
+  group_by(Indicator.Code) %>%
+  summarise(total_obs = n(),
+            n_country  = n_distinct(Country.Code)) %>%
+  mutate(nonmiss_tot2000 = round(100 * total_obs/(max(n_country)*(1+current_year-2000)), 2)) %>%
+  select(Indicator.Code, nonmiss_tot2000)
+
+
+
+# Function to calculate data completeness for each series
+calculate_series_completeness <- function(data, start_year) {
+  latest_year <- max(data$TimePeriod)
+  required_countries <- length(unique(data$iso3c)) * 0.5  # 50% threshold
+  completeness_years <- sapply(start_year, function(year) {
+    year_data <- data %>% 
+      filter(TimePeriod >= year & TimePeriod <= latest_year) %>%
+      group_by(iso3c) %>%
+      summarise(years_available = n_distinct(TimePeriod))
+    sum(year_data$years_available >= (latest_year - year + 1)) >= required_countries
+  })
+  return(completeness_years)
+}
+
+# Assess and categorize each series
+series_completeness <- lapply(series_data, function(data) {
+  completeness <- calculate_series_completeness(data, year_thresholds)
+  category <- match(TRUE, completeness)
+  if (is.na(category)) {
+    return("5) Insufficient data")
+  } else {
+    return(paste(category, ") Data from ", year_thresholds[category], sep = ""))
+  }
+})
+
+# Display the categorization for each series
+print(series_completeness)
+
+
+####
+
+# Function to pull and process data for a given series code
+pull_series_data <- function(series_code) {
+  api_request <- paste('http://unstats.un.org/SDGAPI/v1/sdg/Series/Data?seriesCode=', series_code, '&pageSize=50000', sep="")
+  data <- content(httr::GET(api_request), "text")
+  json <- fromJSON(data, flatten = TRUE)
+  df <- as_tibble(json$data) %>%
+    mutate(TimePeriod = timePeriodStart) %>%
+    left_join(unsd_geo, by = c("geoAreaCode" = "M49")) %>%
+    left_join(select(rg_ctr, country, ISO3 = iso3c, income_level_iso3c, region_iso3c, region), by = "ISO3") %>%
+    mutate(value = as.numeric(value)) %>%
+    rename(iso3c = ISO3) %>%
+    filter(iso3c%in%wdi_ctr$iso3c) # remove regional aggregates, only pull country data
+  return(df)
+}
+
+# Pull data for the specified series
+series_list <- c("SH_STA_BRTC", "SH_STA_MORT")
+series_data <- lapply(series_list, pull_series_data)
+names(series_data) <- series_list
+
+# Define the year thresholds and the latest year for each series
+year_thresholds <- c(1990, 2000, 2010, 2015)
+
+# Function to calculate data completeness for each series and summarize
+calculate_series_completeness <- function(data, start_years) {
+  total_countries <- length(unique(data$iso3c))
+  latest_year <- max(data$TimePeriod)
+  completeness_results <- list()
+  
+  for (start_year in start_years) {
+    year_data <- data %>% 
+      filter(TimePeriod >= start_year & TimePeriod <= latest_year) %>%
+      group_by(iso3c) %>%
+      summarise(years_available = n_distinct(TimePeriod), .groups = 'drop')
+    
+    complete_countries <- sum(year_data$years_available >= (latest_year - start_year + 1))
+    proportion_complete <- complete_countries / total_countries
+    
+    completeness_results[[as.character(start_year)]] <- c(complete_countries, proportion_complete)
+  }
+  
+  best_year <- which.max(unlist(completeness_results[2]))
+  best_start_year <- as.numeric(names(completeness_results)[best_year])
+  completeness_info <- data.frame(
+    StartYear = best_start_year,
+    EndYear = latest_year,
+    NumberOfCountries = completeness_results[[as.character(best_start_year)]][1],
+    ProportionOfCountries = completeness_results[[as.character(best_start_year)]][2],
+    Category = paste("Data from", best_start_year)
+  )
+  
+  return(completeness_info)
+}
+
+# Apply the completeness check and categorization for each series
+series_completeness <- lapply(names(series_data), function(name) {
+  completeness_info <- calculate_series_completeness(series_data[[name]], year_thresholds)
+  completeness_info$Series = name
+  return(completeness_info)
+})
+
+# Combine all series into one dataframe
+completeness_dataframe <- do.call(rbind, series_completeness)
+
+# Display the dataframe
+print(completeness_dataframe)

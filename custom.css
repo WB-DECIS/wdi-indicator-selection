@@ -8,3 +8,94 @@
     padding-top: 20px; /* Ensure enough padding for the logo */
   }
   
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* Ensure TOC subheadings are always expanded */
+#toc ul {
+  display: block !important;
+}
+
+/* Optional: Adjust TOC spacing for better visibility */
+#toc {
+  max-height: 100vh;  /* Ensures TOC is scrollable */
+  overflow-y: auto;   /* Enables vertical scrolling if needed */
+}
+
+#toc-title {
+  display: none;
+}
+
+/* Ensure sidebar background fully extends to the left */
+#quarto-sidebar {
+  background-color: #fafafa;  /* Light gray background */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;  /* Adjust width as needed */
+  height: 100vh;  /* Extend full height */
+  padding-left: 0px;  /* Remove extra left padding */
+  padding-right: 10px;  /* Keep right padding for balance */
+  z-index: 1000;
+}
+
+/* Ensure text inside sidebar is properly spaced from the left */
+#quarto-sidebar > div {
+  margin-left: 20px !important;  /* Pushes text further right */
+  padding-left: 20px !important;  /* Adds extra spacing inside */
+}
+
+/* Ensure TOC items also have proper spacing */
+#quarto-sidebar ul {
+  padding-left: 25px;  /* Moves list items slightly to the right */
+}
+
+
+/* Make the main content responsive */
+#quarto-content {
+  margin-left: 50px;  /* Keeps content aligned with sidebar */
+  max-width: 95%;  /* Allow flexible width, using a percentage */
+  padding-right: 10px;  /* Keep a little spacing on the right */
+}
+
+/* Responsive adjustments for smaller screens */
+@media screen and (max-width: 1800px) {
+  #quarto-content {
+    max-width: 95%;  /* Increase width for medium-sized screens */
+    margin-left: 100px;  /* Keep some space from sidebar */
+  }
+}
+
+@media screen and (max-width: 1800px) {
+  #quarto-content {
+    max-width: 98%;  /* Use most of the screen width on small devices */
+    margin-left: 100px;
+  }
+
+}
+
+/* Style for the custom download link */
+#sidebar-download {
+  text-align: left;
+  margin-left: -10px; 
+  margin-top: 20px;
+}
+
+#sidebar-download a {
+  display: flex;
+  align-items: left;
+  justify-content: left;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  color: #2762E3;  
+}
+
+#sidebar-download i {
+  margin-right: 6px;
+  font-size: 16px;
+  color: #2762E3;  /* Red color for PDF icon */
+}

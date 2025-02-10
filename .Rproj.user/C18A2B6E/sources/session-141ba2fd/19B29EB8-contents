@@ -1,0 +1,40 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Choosing World Development Indicators: A Guide to Indicator Selection"
+  subtitle: "Technical note"
+  date: "12/23/2024"
+  repo-url: "https://github.com/WB-DECIS/wdi-indicator-selection"
+  repo-actions: [source, issue]
+  downloads: [pdf]
+  sharing: [twitter, facebook]
+  # table-numbering: false
+  sidebar: 
+    background: "#F6F6F6"
+    logo: "https://datatopics.worldbank.org/world-development-indicators/img/logo-wb-header-en.svg"
+    search: true
+  site-url: "https://wb-decis.github.io/wdi-indicator-selection/"
+  chapters:
+    - index.qmd
+    - ch1_intro.qmd
+    - ch2.qmd
+    - ch3.qmd
+    - ch4.qmd
+    - ch5.qmd
+    - ch6_conclusion.qmd
+    - references.qmd
+    - annex.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: custom.css
+    table-caption-number: false
+  pdf:
+    toc: true
+    number-sections: true
+    documentclass: scrreprt
+    papersize: a4
+    fontsize: 11pt

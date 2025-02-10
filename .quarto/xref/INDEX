@@ -1,35 +1,45 @@
 {
   "index.qmd": {
-    "index.html": "c315a1b3"
+    "index.html": "c315a1b3",
+    "index.tex": "a8851835"
   },
   "intro.qmd": {
-    "intro.html": "16448dbd"
+    "intro.html": "16448dbd",
+    "intro.tex": "8dfbf65d"
   },
   "summary.qmd": {
     "summary.html": "c28215a3"
   },
   "references.qmd": {
-    "references.html": "e83c4a8c"
+    "references.html": "e83c4a8c",
+    "references.tex": "0367798c"
   },
   "ch1_intro.qmd": {
-    "ch1_intro.html": "a1b15718"
+    "ch1_intro.html": "a1b15718",
+    "ch1_intro.tex": "c1e3a7d1"
   },
   "ch2.qmd": {
-    "ch2.html": "a9878303"
+    "ch2.html": "a9878303",
+    "ch2.tex": "f22ee7ee"
   },
   "ch3.qmd": {
-    "ch3.html": "86921494"
+    "ch3.html": "86921494",
+    "ch3.tex": "6eae4d18"
   },
   "ch4.qmd": {
-    "ch4.html": "3a34ec52"
+    "ch4.html": "3a34ec52",
+    "ch4.tex": "fb9237a8"
   },
   "ch5.qmd": {
-    "ch5.html": "04ee85f5"
+    "ch5.html": "04ee85f5",
+    "ch5.tex": "e567e00a"
   },
   "ch6_conclusion.qmd": {
-    "ch6_conclusion.html": "5047d6f5"
+    "ch6_conclusion.html": "5047d6f5",
+    "ch6_conclusion.tex": "5b6c597f"
   },
   "annex.qmd": {
-    "annex.html": "3d954140"
+    "annex.html": "3d954140",
+    "annex.tex": "f8fe4b16"
   }
 }

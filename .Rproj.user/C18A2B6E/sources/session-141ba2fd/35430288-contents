@@ -1,0 +1,352 @@
+# This code is to import metadata from Metadata Editor and export them to excel,
+# and push the updated metadata from the excel sheet to the Editor.
+# Exported excel file is a Excel with 20 sheets: all string fields are in a 'string_fields' sheet,
+# and the rest nested fields with multiple columns are in a separate sheet with respective field name. 
+# Last updated: 11/5/2024
+# - some fields in 'framework' cannot be combined since inputs are either character or numeric. Forced them into string column.
+
+# 6/17/2024 
+# - Added recommended fields in addition to mandatory fields
+# - Added more conditions to capture empty field when importing
+# - Some changes are made to drop empty fields when pushing updated metadata to editor
+
+rm(list=ls())
+# If Metadata Editor R package is not installed, un-comment the following lines and install the package
+# For details, refer to: https://github.com/ihsn/metadataeditr
+# install.packages("devtools")
+# library(devtools)
+# install_github("ihsn/metadataeditr")
+library(metadataeditr)
+library(dplyr)
+library(tidyr)
+library(readxl)
+library(writexl)
+library(stringr)
+
+# Set directory
+meta.dir <- "your_working_directory"
+
+# --- NADA API credentials and catalog URL -------------------------------------
+my_keys <- "specify_your_key"
+set_api_key(my_keys)  # for metadataeditorqa
+set_api_url("https://metadataeditor.worldbank.org/index.php/api/")
+# QA environment - push to QA environment for testing
+# set_api_url("https://metadataeditorqa.worldbank.org/index.php/api/") 
+set_api_verbose(TRUE)
+# ------------------------------------------------------------------------------
+
+# ----------- Read in/export existing metadata fields into excel ------------------- #
+# Define fields to review 
+mandatory_str <- c(# String fields
+  # 1) Mandatory fields
+  "idno", "name", 
+  "definition_long", "relevance", "measurement_unit",
+  "statistical_concept", "methodology", "aggregation_method",
+  # 2) Recommended fields
+  "release_calendar", 
+  "quality_checks", "quality_note", 
+  "sources_discrepancies", "series_break","limitation",
+  "derivation", "imputation", "citation_requirement"
+) 
+
+mandatory_df <- c(# Nested list (data frame) fields
+  # 1) Mandatory fields
+  "alternate_identifiers", "aliases", "definition_references", 
+  "contacts","sources","authoring_entity",
+  # 2) Recommended fields 
+  "disciplines", "acronyms", 
+  "series_groups", "notes", "links",
+  "statistical_concept_references", "concepts", 
+  "methodology_references", "derivation_references",
+  "imputation_references","related_indicators", 
+  "compliance", "framework"
+) 
+
+# Look up collection ids
+collections_list <-list_collections()
+collections_all <- collections_list$response$collections
+
+#  List all projects by my collection 
+my_proj_list <-list_projects(filter_collection = c(1), limit=5000)
+# my_proj_list <-list_projects(filter_collection = c(1), limit=5000) # WDI collection
+my_proj_all <-my_proj_list$response$projects 
+
+# Specify list of projects to pull metadata from. Can be 1) partial or all projects
+# from a collection, 2) manually defined list of project ids or 3) a single project id.
+# 1) parts or all projects from a collection
+inds_list <- my_proj_all$idno # This line extracts all projects in your collection
+
+# inds_list <- my_proj_all$idno[1:2] # First and Second projects in your collection
+
+# 2) specify a list of project ids 
+# inds_list <- c("any_project_id1", "any_project_id2") 
+
+# 3) specify a single project id
+# inds_list <- "any_project_id"
+
+# Create an empty data frame for string fields
+meta_str <- data.frame(matrix(nrow = 1, ncol = length(mandatory_str)))
+names(meta_str) <- mandatory_str
+
+# Create an empty list for data frame fields (for projects that has filled-in fields) 
+meta_df <- list()
+
+# Create an empty list with mandatory column names (for projects that that has no data in the fields)
+meta_df_no_data <-list(
+  # 1) Mandatory fields
+  alternate_identifiers = data.frame(name=NA, identifier=NA, database=NA, uri=NA, notes=NA),
+  aliases = data.frame(alias=NA),
+  definition_references = data.frame(source=NA, uri=NA, note=NA),
+  contacts = data.frame(name=NA, role=NA, position=NA, affiliation=NA, email=NA, telephone=NA, uri=NA),
+  sources = data.frame(name=NA, organization=NA, uri=NA, publisher=NA, # Only populates fields specified here.
+                       publication_date=NA, access_date=NA, note=NA), # Nested fields,'Author (Person)', needs to be populated in UI
+  authoring_entity = data.frame(name=NA, affiliation=NA, abbreviation=NA, email=NA, uri=NA),
+  # 2) Recommended fields
+  disciplines = data.frame(id=NA, name=NA, parent_id=NA, vocabulary=NA, uri=NA),
+  acronyms = data.frame(acronym=NA,expansion=NA, occurrence=NA),
+  series_groups = data.frame(name=NA, description=NA, version=NA, uri=NA), # Indicator groups
+  notes = data.frame(note=NA, type=NA),
+  links = data.frame(type=NA, description=NA, uri=NA),
+  statistical_concept_references = data.frame(source=NA, uri=NA, note=NA),
+  concepts = data.frame(name=NA, definition=NA, uri=NA), # Related concepts
+  methodology_references = data.frame(source=NA, uri=NA, note=NA),
+  derivation_references = data.frame(source=NA, uri=NA, note=NA),
+  imputation_references = data.frame(source=NA, uri=NA, note=NA), 
+  related_indicators = data.frame(code=NA, label=NA, uri=NA, relationship=NA, type=NA),
+  compliance = data.frame(standard=NA, abbreviation=NA, custodian=NA, uri=NA), # Standards
+  framework = data.frame(
+    name = NA_character_, abbreviation = NA_character_, custodian = NA_character_,
+    description = NA_character_, goal_id = NA_character_, goal_name = NA_character_,
+    goal_description = NA_character_, target_id = NA_character_, target_name = NA_character_,
+    target_description = NA_character_, indicator_id = NA_character_, indicator_name = NA_character_,
+    indicator_description = NA_character_, uri = NA_character_, notes = NA_character_
+  )
+)
+
+# Loop through all fields to get metadata and populate them into data frames 
+# Looping each project
+for (ind_index in seq_along(inds_list)) {
+  # Project id 
+  idno0 <- inds_list[ind_index]
+  # Get existing metadata from editor
+  proj <- project_by_idno(idno0)
+  proj_meta <- proj$response$project$metadata$series_description # get all metadata fields
+  
+  # Looping each field
+  # String fields 
+  for (s in mandatory_str) {
+    # If no data is available, NA will be populated
+    if (is.null(proj_meta[[s]])|| 
+        (is.list(proj_meta[[s]]) && length(proj_meta[[s]]) == 0) || 
+        (is.list(proj_meta[[s]]) && length(proj_meta[[s]]) == 1 && length(proj_meta[[s]][[1]]) == 0)) {
+      meta_str[ind_index, s] <- NA
+      meta_str[ind_index, "proj_idno"] <- idno0
+    } else { # If data is already available, pull it from editor
+      meta_str[ind_index, s] <- proj_meta[[s]]
+      meta_str[ind_index, "proj_idno"] <- idno0
+    }
+  }
+  # Data frame fields - Updated 11/5/2024: some fields in 'framework' cannot be combined since inputs are either character or numeric. Forced it to string column.
+  # If data is already available, pull it from editor
+  for (d in mandatory_df) {
+    if (is.data.frame(proj_meta[[d]]) && ncol(proj_meta[[d]]) > 0) {
+      # Check if 'goal_id' exists, and if not, add it as a character column
+      if (!"goal_id" %in% names(proj_meta[[d]])) {
+        proj_meta[[d]] <- proj_meta[[d]] %>%
+          mutate(goal_id = NA_character_)
+      } else {
+        # Ensure 'goal_id' is of character type
+        proj_meta[[d]] <- proj_meta[[d]] %>%
+          mutate(goal_id = as.character(goal_id))
+      }
+      
+      # Check if 'target_id' exists, and if not, add it as a character column
+      if (!"target_id" %in% names(proj_meta[[d]])) {
+        proj_meta[[d]] <- proj_meta[[d]] %>%
+          mutate(target_id = NA_character_)
+      } else {
+        # Ensure 'target_id' is of character type
+        proj_meta[[d]] <- proj_meta[[d]] %>%
+          mutate(target_id = as.character(target_id))
+      }
+      
+      meta_df[[d]] <- bind_rows(
+        meta_df[[d]], 
+        proj_meta[[d]] %>%
+          mutate(proj_idno = idno0, 
+                 ind_idno = proj_meta$idno,
+                 ind_name = proj_meta$name)
+      )
+    } else if (is.null(proj_meta[[d]]) ||
+               is.character(proj_meta[[d]]) ||
+               (is.list(proj_meta[[d]]) && length(proj_meta[[d]]) == 0) ||
+               (is.list(proj_meta[[d]]) && length(proj_meta[[d]][[1]]) == 0)) {
+      meta_df[[d]] <- bind_rows(
+        meta_df[[d]], 
+        meta_df_no_data[[d]] %>%
+          mutate(proj_idno = idno0, 
+                 ind_idno = proj_meta$idno,
+                 ind_name = proj_meta$name)
+      )
+    }
+  }
+}
+
+# View if all fields are exported in right format
+View(meta_str)
+View(meta_df)
+
+# Add missing columns if there is any 
+add_missing_columns <- function(meta_df, meta_df_no_data_df) {
+  missing_columns <- setdiff(names(meta_df_no_data_df), names(meta_df))
+  for (col in missing_columns) {
+    meta_df[[col]] <- NA
+  }
+  return(meta_df)
+}
+
+# Iterate over the lists to add missing columns and drop unnecessary columns
+for (i in names(meta_df_no_data)) {
+  meta_df[[i]] <- add_missing_columns(meta_df[[i]], meta_df_no_data[[i]])
+  meta_df[[i]] <- meta_df[[i]][c(names(meta_df_no_data[[i]]),"proj_idno","ind_idno","ind_name")]
+}
+
+# Place additional columns to identify indicators at the end of data frame
+meta_df <-lapply(meta_df, function(x) select(x, -c(proj_idno,ind_idno,ind_name),everything()))
+
+# remove archived indicators 
+archived <-list_projects(filter_collection = c(24), limit=5000)
+# my_proj_list <-list_projects(filter_collection = c(1), limit=5000) # WDI collection
+archived_proj <-archived$response$projects 
+
+meta_str_final <- filter(meta_str, !proj_idno%in%archived_proj$idno)
+meta_df_final <- lapply(meta_df, function(df) {
+  df <- filter(df, !proj_idno%in%archived_proj$idno)
+  }
+  )
+
+# Write all fields into an excel 
+writexl::write_xlsx(c("string_fields"=list(meta_str_final), meta_df_final), paste0(meta.dir,"all_metadata_20250121.xlsx"))
+
+# -----------  Import updated metadata from Excel file and push update to the editor  ------------------- #
+## Make changes to the 'metadata_imported.xlsx' and re-save it as 'metadata_updated.xlsx'
+# Read in updated excel file  
+path <- paste0(meta.dir, "sample_metadata_florina_updated.xlsx")
+
+# Import all sheets into list of data frames (tibbles)
+sheets <- readxl::excel_sheets(path)
+lst <- lapply(sheets, function(sheet) 
+  readxl::read_excel(path, sheet = sheet)
+)
+names(lst) <- sheets
+list2env(lst, envir = .GlobalEnv)
+
+# View if all updated metadata fields are exported into R
+View(lst)
+
+# Specify a list of projects to update. Same logic as in defining a list of metadata to download
+# 1) parts or all projects in the updated Excel sheet (string_fields sheet, since it only has single row for each project)
+inds_update <- string_fields$proj_idno# returns all project ids from string_fields Excel sheet
+
+# 2) or define a list with collection 
+# inds_update <- my_proj_all$idno[1:2] # returns the same list of project ids that were pulled above
+
+# 3) manually define project id (either single project or multiple)
+# inds_update <- c("5ac68fae-9fb8-4db8-a1ed-b776c310a5f4")
+# inds_update <- c("any_project_id1","any_project_id2", "any_project_id3")
+
+
+# -----------  Push updated metadata to the editor  ------------------- #
+# Looping each project
+for (i in inds_update) {
+  meta_list <- lapply(lst, function(x) filter(x, proj_idno == i)) # filtering metadata for selected project
+  meta_list_df <- meta_list[which(names(meta_list) != "string_fields")] 
+  
+  # !!! Codes below are to make sure to only include default columns of each data frame fields
+  # Once wrong column is created, it cannot be removed with the current API/R package.
+  for (j in names(meta_list_df)) {
+    meta_list_df[[j]] <- meta_list_df[[j]][names(meta_df_no_data[[j]])]
+  }
+  
+  # Remove empty rows from data frame fields to prevent creating unnecessary empty list in respective field 
+  meta_list_df <- lapply(meta_list_df,  function(x) select_if(x, ~!all(is.na(.))))
+  
+  # Specify metadata fields to be updated - comment/un-comment as needed
+  meta_updated_all <- list(series_description = list(
+    
+    # String fields:
+    # 1) Mandatory fields
+    # idno="", # auto-filled field
+    # name="", # auto-filled field
+    definition_long=meta_list$string_fields$definition_long,
+    relevance=meta_list$string_fields$relevance,
+    measurement_unit=meta_list$string_fields$measurement_unit,
+    statistical_concept=meta_list$string_fields$statistical_concept,
+    methodology=meta_list$string_fields$methodology,
+    aggregation_method=meta_list$string_fields$aggregation_method,
+    
+    # 2) Recommended fields 
+    release_calendar=meta_list$string_fields$release_calendar,
+    quality_checks=meta_list$string_fields$quality_checks,
+    quality_note=meta_list$string_fields$quality_note,
+    sources_discrepancies=meta_list$string_fields$sources_discrepancies,
+    series_break=meta_list$string_fields$series_break,
+    limitation=meta_list$string_fields$limitation,
+    derivation=meta_list$string_fields$derivation,
+    imputation=meta_list$string_fields$imputation,
+    citation_requirement=meta_list$string_fields$citation_requirement,
+    
+    # Data frame fields:
+    # 1) Mandatory fields
+    alternate_identifiers=meta_list_df$alternate_identifiers,
+    aliases=meta_list_df$aliases,
+    definition_references=meta_list_df$definition_references,
+    contacts=meta_list_df$contacts,
+    sources=meta_list_df$sources,
+    authoring_entity=meta_list_df$authoring_entity,
+    
+    # 2) Recommended fields
+    disciplines=meta_list_df$disciplines,
+    acronyms=meta_list_df$acronyms,
+    series_groups=meta_list_df$series_groups,
+    notes=meta_list_df$notes,
+    links=meta_list_df$links,
+    statistical_concept_references=meta_list_df$statistical_concept_references,
+    concepts=meta_list_df$concepts,
+    methodology_references=meta_list_df$methodology_references,
+    derivation_references=meta_list_df$derivation_references,
+    imputation_references=meta_list_df$imputation_references,
+    related_indicators=meta_list_df$related_indicators,
+    compliance=meta_list_df$compliance,
+    framework=meta_list_df$framework
+  )
+  )
+  
+  # Drop any empty fields (where user did not provide any value) to avoid creating NULL field in the editor API
+  filtered_fields <- list()
+  # Loop through imported metadata fields
+  for (name in names(meta_updated_all$series_description)) {
+    element <- meta_updated_all$series_description[[name]]
+    
+    # Keep non-empty string fields
+    if (is.character(element) && !is.na(element) && element != "") {
+      filtered_fields[[name]] <- element
+    }
+    
+    # Keep non-empty dataframe (nested) fields
+    if (is.data.frame(element) && ncol(element) > 0) {
+      filtered_fields[[name]] <- element
+    }
+  }
+  
+  # Final fields to be pushed to the editor
+  meta_updated <- list(series_description=filtered_fields)
+  
+  # Push update to the editor
+  results <- update_project(
+    type="timeseries",
+    idno = i,
+    partial_update = TRUE,
+    metadata=meta_updated
+  )
+}

@@ -1,40 +1,35 @@
 project:
-  type: book
+  type: website  # Keep it as a website to enable a single-page format
   output-dir: docs
 
-book:
-  title: "Choosing World Development Indicators: A Guide to Indicator Selection"
-  subtitle: "Technical note"
-  date: "12/23/2024"
+website:
+  title: "Choosing World Development Indicators"
+  site-url: "https://wb-decis.github.io/wdi-indicator-selection/"
   repo-url: "https://github.com/WB-DECIS/wdi-indicator-selection"
-  repo-actions: [source, issue]
-  downloads: [pdf]
-  sharing: [twitter, facebook]
-  # table-numbering: false
-  sidebar: 
-    background: "#F6F6F6"
+  repo-actions: [source, issue]  # Adds "View Source" and "Report Issue" buttons
+  # downloads: [pdf]  # Enables PDF download
+  # sharing: [twitter, facebook, linkedin]  # Social media buttons
+  sidebar:
     logo: "https://datatopics.worldbank.org/world-development-indicators/img/logo-wb-header-en.svg"
     search: true
-  site-url: "https://wb-decis.github.io/wdi-indicator-selection/"
-  chapters:
-    - index.qmd
-    - ch1_intro.qmd
-    - ch2.qmd
-    - ch3.qmd
-    - ch4.qmd
-    - ch5.qmd
-    - ch6_conclusion.qmd
-    - references.qmd
-    - annex.qmd
-
+    tools:
+      - text: "Download PDF"
+      
 format:
   html:
     theme: cosmo
     css: custom.css
-    table-caption-number: false
-  pdf:
+    toc: true
+    toc-location: right  # Ensures the TOC appears on the right side
+    toc-depth: 3  # Controls how many levels of headings appear in TOC
+    number-sections: true
+    toc-expand: true
+    
+pdf:
+    documentclass: scrreprt  # Uses a structured LaTeX class
     toc: true
     number-sections: true
-    documentclass: scrreprt
     papersize: a4
     fontsize: 11pt
+    
+    
