@@ -93,4 +93,4 @@ color: #2762E3;  /* Red color for PDF icon */
 @media screen and (max-width: 800px) {
   #quarto-sidebar, #toc {
     display: none !important;
-  }
+  }}
