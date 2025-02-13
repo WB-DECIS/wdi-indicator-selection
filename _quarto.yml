@@ -20,7 +20,7 @@ format:
     theme: cosmo
     css: custom.css
     toc: true
-    toc-location: right  # Ensures the TOC appears on the right side
+    # toc-location: right  # Ensures the TOC appears on the right side
     toc-depth: 3  # Controls how many levels of headings appear in TOC
     number-sections: true
     toc-expand: true
